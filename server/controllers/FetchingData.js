@@ -4,22 +4,13 @@ import fetch from 'node-fetch';
 import Redis from 'ioredis';
 import JSONCache from 'redis-json';
 
-const redis = new Redis();
-
-const jsonCache = new JSONCache(redis)
-
-
-
-// const result = await jsonCache.get('123')
-
 dotenv.config();
 
-// const {
-//   TWILLIO_SID: accountSid,
-//   TWILLIO_KEY: TwilloAuthToken,
-// } = process.env;
+let REDIS_URL = process.env.REDIS_URL || 'redis://127.0.0.1:6379';
 
-// twilio(accountSid, TwilloAuthToken);
+const redis = new Redis(REDIS_URL);
+
+const jsonCache = new JSONCache(redis)
 
 /**
  * @class WhatsappBot
@@ -33,7 +24,7 @@ class FetchingData {
    * @param {object} next - Error handler
    * @returns {object} - object representing response message
    */
-  static async fetchingData(req, res, next) {
+  static async fetchData(req, res, next) {
     const twiml = new MessagingResponse();
     let q = req.body.Body;
 
@@ -41,6 +32,7 @@ class FetchingData {
       let response = await fetch(`https://api.covid19api.com/summary`);
       const data = await response.json();
       const result = JSON.stringify(data);
+      console.log(result);
 
       await jsonCache.set('data', result);
 

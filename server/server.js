@@ -5,17 +5,8 @@ import fs from 'fs';
 
 const app = express();
 
-console.log('test');
-
-// schedule tasks to be run on the server
-// * * * * * *
-// cron.schedule("* 5 * * *", function() {
-//   console.log("---------------------");
-//   console.log("Running Cron Job");
-//   fs.unlink("./error.log", err => {
-//     if (err) throw err;
-//     console.log("Error file succesfully deleted");
-//   });
-// });
+console.log("---------------------");
+console.log("Running Cron Job");
+FetchingData.fetchData();
 
 app.listen("3128");
