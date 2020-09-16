@@ -25,9 +25,6 @@ class FetchingData {
    * @returns {object} - object representing response message
    */
   static async fetchData(req, res, next) {
-    const twiml = new MessagingResponse();
-    let q = req.body.Body;
-
     try {
       let response = await fetch(`https://api.covid19api.com/summary`);
       const data = await response.json();
