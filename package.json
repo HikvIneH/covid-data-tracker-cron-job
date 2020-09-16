@@ -26,12 +26,6 @@
     "node-fetch": "^2.6.1",
     "redis-json": "^4.2.0"
   },
-  "devDependencies": {
-    "@babel/cli": "7.5.5",
-    "@babel/core": "7.5.5",
-    "@babel/node": "^7.5.5",
-    "@babel/preset-env": "^7.5.5"
-  },
   "engines": {
     "node": "10.x"
   }
