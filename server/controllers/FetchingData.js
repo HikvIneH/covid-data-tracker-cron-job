@@ -29,9 +29,8 @@ class FetchingData {
       let response = await fetch(`https://api.covid19api.com/summary`);
       const data = await response.json();
       const result = JSON.stringify(data);
-      console.log(result);
 
-      await jsonCache.set('data', result);
+      const redisData = await jsonCache.set('data', result);
 
       return res.status(200);
     } catch (error) {
