@@ -22,7 +22,9 @@
     "express": "^4.17.1",
     "ioredis": "^4.17.3",
     "node-fetch": "^2.6.1",
-    "redis-json": "^4.2.0"
+    "redis-json": "^4.2.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6"
   },
   "devDependencies": {
     "@babel/cli": "7.5.5",

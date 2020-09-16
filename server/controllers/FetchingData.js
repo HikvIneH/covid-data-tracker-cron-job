@@ -16,25 +16,17 @@ const jsonCache = new JSONCache(redis)
  * @description class will implement bot functionality
  */
 class FetchingData {
-  /**
-   * @memberof FetchingData
-   * @param {object} req - Request sent to the route
-   * @param {object} res - Response sent from the controller
-   * @param {object} next - Error handler
-   * @returns {object} - object representing response message
-   */
-  static async fetchData(res) {
+  static async fetchData(res, next) {
     try {
       let response = await fetch(`https://api.covid19api.com/summary`);
       const data = await response.json();
       const result = JSON.stringify(data);
       await jsonCache.set('data', result);
       console.log("Get Data");
-      await jsonCache.get('data');
 
       return res.status(200);
     } catch (error) {
-      return error;
+      return next(error);
     }
   }
 }

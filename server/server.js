@@ -1,8 +1,14 @@
+// import FetchingData from './controllers/FetchingData';
+
+import express from 'express';
 import dotenv from 'dotenv';
 import fetch from 'node-fetch';
 import Redis from 'ioredis';
 import JSONCache from 'redis-json';
-import express from 'express';
+import rp from 'request-promise';
+
+const app = express();
+const { PORT = 4000 } = process.env;
 
 dotenv.config();
 
@@ -11,21 +17,33 @@ let REDIS_URL = process.env.REDIS_URL || 'redis://127.0.0.1:6379';
 const redis = new Redis(REDIS_URL);
 
 const jsonCache = new JSONCache(redis)
+let summary;
 
-const app = express();
-const { PORT = 3000 } = process.env;
+async function fetchData() {
+  try {
+    let response = await fetch(`https://api.covid19api.com/summary`);
+    const data = await response.json();
 
-console.log("---------------------");
-console.log("Running Job");
+    console.log("---------------------");
+    console.log("Running Job");
+    console.log("Store to Redis")
 
-let response = await fetch(`https://api.covid19api.com/summary`);
-const data = await response.json();
-const result = JSON.stringify(data);
-await jsonCache.set('data', result);
-console.log("Get Data");
-await jsonCache.get('data');
+    await jsonCache.rewrite('data', response);
 
-console.log("Done");
-console.log("---------------------");
+    return summary;
+  } catch (error) {
+    return error;
+  }
+}
 
-app.listen(PORT, () => console.log(`Running on ${PORT}`));
+fetchData()
+  .then(
+    console.log
+  )
+  .catch(console.error);
+
+
+// console.log(result);
+// FetchingData.fetchData;
+
+app.listen(PORT, () => console.log(`App Listening on port ${PORT}`));
