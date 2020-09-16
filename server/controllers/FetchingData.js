@@ -29,6 +29,8 @@ class FetchingData {
       const data = await response.json();
       const result = JSON.stringify(data);
       await jsonCache.set('data', result);
+      console.log("Get Data");
+      await jsonCache.get('data');
 
       return res.status(200);
     } catch (error) {
