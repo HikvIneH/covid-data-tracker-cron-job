@@ -1,12 +1,11 @@
 import FetchingData from './controllers/FetchingData';
-import cron from 'node-cron';
 import express from 'express';
-import fs from 'fs';
 
 const app = express();
+const { PORT = 3000 } = process.env;
 
 console.log("---------------------");
-console.log("Running Cron Job");
+console.log("Running Job");
 FetchingData.fetchData();
 
-app.listen("3128");
+app.listen(PORT, () => console.log(`App Listening on port ${PORT}`));
