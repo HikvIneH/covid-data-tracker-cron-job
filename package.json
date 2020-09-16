@@ -19,7 +19,6 @@
   "homepage": "https://github.com/HikvIneH/covid-data-tracker-cron-job#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
     "ioredis": "^4.17.3",
     "node-fetch": "^2.6.1",
     "redis-json": "^4.2.0"
