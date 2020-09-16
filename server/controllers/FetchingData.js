@@ -1,6 +1,5 @@
 import dotenv from 'dotenv';
 import fetch from 'node-fetch';
-
 import Redis from 'ioredis';
 import JSONCache from 'redis-json';
 
@@ -24,17 +23,16 @@ class FetchingData {
    * @param {object} next - Error handler
    * @returns {object} - object representing response message
    */
-  static async fetchData(req, res, next) {
+  static async fetchData(res) {
     try {
       let response = await fetch(`https://api.covid19api.com/summary`);
       const data = await response.json();
       const result = JSON.stringify(data);
-
-      const redisData = await jsonCache.set('data', result);
+      await jsonCache.set('data', result);
 
       return res.status(200);
     } catch (error) {
-      return next(error);
+      return error;
     }
   }
 }
