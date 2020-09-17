@@ -9,24 +9,27 @@ const app = express();
 const { PORT = 4000 } = process.env;
 dotenv.config();
 
-let REDIS_URL = process.env.REDIS_URL || 'redis://127.0.0.1:6379';
+const REDIS_URL = process.env.REDIS_URL || 'redis://127.0.0.1:6379';
 const redis = new Redis(REDIS_URL);
 const jsonCache = new JSONCache(redis, {prefix: 'cache:'})
-let summary;
 
 async function fetchData() {
   try {
-    let response = await fetch(process.env.API_URL || 'https://corona.lmao.ninja/v2/countries?yesterday&sort');
-    summary = await response.json();
+    const baseUrl = 'https://corona.lmao.ninja/v2/'
+    const responseByCountry = await fetch(process.env.API_BASE_URL + 'countries?sort' || 'https://corona.lmao.ninja/v2/countries?yesterday&sort');
+    const responseGlobal = await fetch(process.env.API_BASE_URL + 'all' || 'https://corona.lmao.ninja/v2/all?yesterday');
+    const countries = await responseByCountry.json();
+    const global = await responseGlobal.json();
     console.log("---------------------");
     console.log("Running Job");
     console.log("Store to Redis")
 
-    await jsonCache.rewrite('data', summary);
+    await jsonCache.rewrite('countries', countries);
+    await jsonCache.rewrite('global', global);
 
     console.log("Done");
     console.log("---------------------");
-    return summary;
+    return "OK";
   } catch (error) {
     return error;
   }
