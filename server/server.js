@@ -16,7 +16,7 @@ let summary;
 
 async function fetchData() {
   try {
-    let response = await fetch(process.env.API_URL);
+    let response = await fetch(process.env.API_URL || 'https://corona.lmao.ninja/v2/countries?yesterday&sort');
     summary = await response.json();
     console.log("---------------------");
     console.log("Running Job");
